@@ -46,14 +46,9 @@ Creates the table that for each symbol will code into a series of bits.
 def make_table(tree, symbols):
 	table = np.array([])
 	for symbol in symbols:
-		sym, code = tree.search(symbol[0])
-		table = np.append(table, np.array([sym, code]))
+		code = tree.search(symbol[0])
+		table = np.append(table, (symbol[0], code))
 	return table
-	
-"""
-Searches given tree for symbol
-"""
-	
 
 """
 Creates the Huffman tree with codes for each symbol.
@@ -127,6 +122,6 @@ word = "ilikestrings"
 array = sort_to_array(word)
 S, P = make_dicionary(array)
 D = sort_to_dict(S, P)
-tree = huffman(D)
+table = huffman(D)
 
 print "Program end."

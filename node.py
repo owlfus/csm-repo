@@ -59,4 +59,9 @@ class Node(object):
 	Searches if the given node has the symbol and returns its code.
 	"""
 	def search(self, symbol):
-		pass
+		if(self.name == symbol):
+			return self.code
+		elif (symbol in self.right.name):
+			return self.right.search(symbol)
+		else:
+			return self.left.search(symbol)
