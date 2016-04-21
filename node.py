@@ -2,7 +2,7 @@
 import numpy as np
 
 class Node(object):
-	name = ""
+	name = None
 	freq = 0
 	left = None
 	right = None
@@ -46,6 +46,11 @@ class Node(object):
 
 	"""
 	Expands node and all the subsequent nodes and completes codes for each node.
+		Expanding: 
+			If the name is a symbol, 
+			then atributes to self the code passed down from previous expasions.
+			Else will expand right and left.
+			Left is '0', Right is '1'.
 	"""
 	def expand(self, code):
 		if (len(self.name) == 1):

@@ -23,7 +23,7 @@ One array has the symbols. The other has the number of occurrences.
 def make_dicionary(word):
 	temp = word
 	size = len(word)
-	set(temp)
+	set(temp) #removes duplicates
 	amount = np.array([], np.int8)
 	for symbol in temp:
 		amount = np.append(amount, sum(word == symbol))
@@ -41,7 +41,41 @@ def huffman(array):
 	return table
 
 """
+Codes a given string with the given Huffman..
+"""
+def codify(string, dicc):
+	result = ''
+	for s in string:
+		result += dicc[s]
+	return result
+
+"""
+Decodes a given code to the string.
+	Decoding:
+		Until the trimmed bits are a coded symbol, trims become larger.
+		When the trimmed bits are a coded symbol, 
+		gets the symbol by indexing the keys with an array of booleans,
+		where the only True is the index of the symbol.
+
+		Appends and returns to the final result.
+"""
+def decodify(code, dicc):
+	keys = np.array(dicc.keys())
+	values = np.array(dicc.values())
+	result = np.array([])
+	start_index = 0
+	for end_index in range(len(code) + 1):
+		c = ''
+		c = keys[values == code[start_index:end_index]]
+		if len(c) != 0:
+			result = np.append(result, c[0])
+			start_index = end_index
+	return result
+
+
+"""
 Creates the table that for each symbol will code into a series of bits.
+Searches for each leaf node and returns its code.
 """
 def make_table(tree, symbols):
 	table = np.array([])
@@ -52,6 +86,8 @@ def make_table(tree, symbols):
 
 """
 Creates the Huffman tree with codes for each symbol.
+Transform each tuple in a tree into a Node object.
+After there is only one root node, expands to give each node its code.
 """
 def make_tree(tree):
 	while(len(tree) > 1):
@@ -74,6 +110,8 @@ def sort_by_freq(tree):
 
 """
 Transforms the Huffman container into an array of nodes.
+If a diccionary is passed, will transform into an array of Node object.
+If an array of tuples is passed, will create an array of Node object.
 """
 def transform_tree(array):
 	if isinstance(array[0], tuple):
@@ -110,6 +148,15 @@ Writes an image with the name.
 def write_image(name, image):
 	pass
 
+"""
+Print the whole table from a dicc and a tuple array containing 
+"""
+def print_table(tuple_array, dicc):
+	print 'Generated Huffman Table'
+	print 'Symbol - Occurences - Code'
+	for i in range(len(tuple_array)):
+		print '  ', tuple_array[i][0], '   -    ', tuple_array[i][1], '    - ', dicc[tuple_array[i][0]]
+
 
 
 ###########################################################################################
@@ -118,10 +165,15 @@ def write_image(name, image):
 print "Program start."
 
 # img = read_image("lena_gray.tiff")
-word = "ilikestrings"
+word = "ihavesomereallyidiotfriends"
 array = sort_to_array(word)
 S, P = make_dicionary(array)
 D = sort_to_dict(S, P)
 table = huffman(D)
-
+dicc = dict(zip(table[0::2], table[1::2]))
+print_table(D, dicc)
+code = codify('myfriendsarereallymorons', dicc)
+decode = decodify(code, dicc)
+print 'code = ', code 
+print 'decode = ', decode
 print "Program end."
