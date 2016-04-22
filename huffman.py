@@ -1,5 +1,6 @@
 # Author - Tomaz Azinhal - 41619
 
+from file_manager import File_Manager
 import matplotlib.pyplot as plt
 from node import Node
 from leaf import Leaf
@@ -131,5 +132,10 @@ for x in sorted(Code, key=lambda leaf:leaf.name[0], reverse=True):
 poop = img_decode == img
 print 'Number of Fake pixels = ', sum(poop == False)
 
+manager = File_Manager('test')
+manager.write_file(img_code)
+print 'Image Written.'
+file = manager.read_file()
+print file
 
 print "Program end."
