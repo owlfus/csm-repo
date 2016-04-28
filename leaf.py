@@ -1,3 +1,5 @@
+# Author - Tomaz Azinhal - 41619
+
 import numpy as np
 
 class Leaf(object):

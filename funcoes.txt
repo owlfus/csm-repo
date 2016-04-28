@@ -1,0 +1,102 @@
+## Funções
+
+#Gera_Huffman
+
+A função gera_huffman gera uma tabela com o código binário para cada símbolo de um dado conjunto, usando o método de Huffman.
+Esta função tem como parâmetros de entrada uma tabela com os símbolos existentes e as suas probabilidades ou ocorrências.
+
+A função criada para cumprir este requisito chama-se 'get_huffman'. Dentro desta função, primeiro vai-se contruir uma árvore de maneira que se possa percorrer de maneira recursiva para de seguida a transformar numa tabela que para cada símbolo indica o seu código.
+
+Esta árvore é contruída com base numa classe nó, ou neste caso 'folha', em que cada nó guarda a informação de:
+ * Símbolo: Isto é, se este nó for um nó final onde só há um dos símbolos iniciais, então irá ter a designação 	desse símbolo. Se for o resultado de uma operação do método de Huffman, então irá conter uma designação 	apropriada para conter esses símbolos.
+ 
+ * Frequência: Para cada símbolo, irá indicar o seu número de ocorrências, e se for um símbolo composto, irá   	indicar a soma de todos os símbolos que o formam.
+
+ * Direita: Indica qual o nó anterior posicionado à sua direita, de modo a que se possa percurrer a árvore de 	uma maneira recursiva.
+
+ * Esquerda: Indica qual o nó anterior posicionado à sua esquerda.
+
+ * Código: Como iremos mostrar mais à frente, este será o contentor de dados que irá conter o código referente 	a cada símbolo.
+
+Depois de criada uma tabela de nós, cada um guardando a informação de cada símbolo e a sua frequência, utiliza-se o método de Huffman; ordena-se os símbolos pela sua frequência decrescente, junta-se os dois nós com menor frequência criando um novo nó com referência para os nós anteriores usando os atributos 'direita' e 'esquerda' da classe 'Folha, insere-se na árvore, ordena-se a árvore por ordem de frequência decrescente e repete-se o processo até haver apenas um nó. 
+
+Notas:
+Sempre que se retira dois nós, adiciona-se um, por isso a árvore irá ficar cada vez menor, mas toda a informação é preservada dentro das referências dos nós em cada nó.
+Quando se fica apenas com um nó, este nó irá conter uma designação com todos os nós e com o tamanho da informação que se quer codificar.
+
+Para finalmente associar um código a cada símbolo simples (isto é, um símbolo que é passado pela tabela inicial, não um símbolo composto por vários símbolos) percorre-se cada nó verificando se este ainda tem nós filhos, e se tiver, expandir para a esquerda e para a direita.
+Este método de expansão é o que se escreveu agora mesmo, percorrer o nó e verificar se tem nós filhos.
+Caso o nó não tenha nós filhos, então encontra-se um nó simples, ou seja, um nó com um símbolo simples. É a este nó que se quer atribuir um código.
+Ora, ao expandir um nó, quando se expande para a esquerda, adiciona-se um '0', e se for para a direita um '1', isto quer dizer que recursivamente o código que se vai passar vai aumentar mais conforme a profundidade do nó. E como se estudou, os nós mais profundos são os nós com menos frequência, e por isso os que se vão ter mais bits no seu código.
+
+Executando apenas uma primeira expansão no nó raiz, este vai realizar expansões em todos os seus filhos até que estejam todos categorizados.
+
+Tem-se, assim, uma tabela com todos os símbolos e os seus códigos.
+
+
+#Codifica
+
+A função codifica o que faz, é codificar todos os símbolos de um ficheiro. Para isto, recebe toda a informação a codificar e a tabela que será usada para codificar cada símbolo.
+Para cada símbolo encontrado, adiciona-se ao final de uma varíavel o seu respectivo código.
+
+#Descodifica
+
+A função descodifica recebe um conjunto de bits e a tabela de descodificação. Para descodificar a mensagem retira-se um número de bits incremental até que um conjunto de bits esteja na tabela de descodificação.
+Quando um conjunto de bits está na tabela de descodificação, retira-se o símbolo correspondente e adiciona-se ao final do resultado.
+No final ter-se-á a informação inicial.
+
+Nota: Para a descodificação passar do tempo inicial de 90 segundos para 1.5 segundos, em vez de se utilizar o método append para colocar os símbolos no final, alocou-se previamente o contentor final com o tamanho necessário para guardar os símbolos, isto faz com que o sistema não tenha de alocar toda a informação sempre que o seu tamanho máximo for excedido.
+
+#Escrever
+
+A função escrever recebe um conjunto de bits e escreve num ficheiro esses bits de modo que sejam lidos sem que seja preciso aplicar nenhuma acção aos dados lidos.
+Ao escrever utiliza-se as funções hexlify para comprimir a informação e ficar ainda mais comprimido o ficheiro final.
+
+#Ler
+
+A função ler recebe um nome do ficheiro a abrir e ao abri-lo vai receber os bits do ficheiro para serem descodificados.
+Como ao escrever se aplica uma fórmula de compressão é preciso aplicar a função inversa para descomprimir a informação toda.
+
+## Resultados
+
+Os tempos gerados da execução das funções é o seguinte
+
+Tempo de criação da tabela de Huffman:
+
+[Time] Huffman =  0.0903949737549
+
+Tempo de codificação da imagem 'lena_gray.tif' com a tabela de Huffman:
+
+[Time] Codify =  0.0917201042175
+
+Tempo de gravação do ficheiro 'lena_gray.tif' codificado:
+
+[Time] Image Write =  12.4492440224
+
+Tempo de leitura do ficheiro gravado:
+
+[Time] Image Read =  2.6883699894
+
+Tamanho do ficheiro codificado em código binário:
+
+[Length] Code =  1957747
+
+Tempo de descodificação da imagem 'lena_gray.tif' com a tabela de Huffman:
+
+[Time] Decodify =  1.49597096443
+
+Number of Fake pixels =  0
+Entropy =  7.44550671971
+Average bit size =  7.46821212769
+Eficiency =  0.996959726426
+
+## Conclusão
+
+O método de Huffman, é, para o grupo, um método muito interessante. Ponderando no que Huffman pensou para criar este método, é impressionante a simplicidade com que pode ser replicado. 
+
+Foi crucial a criação de uma classe auxiliar para guardar a informação de maneira adequada para depois saber ser acedidade de uma maneira eficiente e criada. Depois desta classe ter sido criada, a adaptação do código foi muito rápida e o código tornou-se muito mais claro.
+
+Outro ponto interessante foi a guardar o código, guardando um ficheiro com zeros e uns, o ficheiro 'comprimido' ficou com um tamanho maior que o ficheiro original. Para ler o ficheiro, apenas utiliza-se o processo contrário e não houve dificuldades nesse aspecto.
+
+Concluindo, este trabalho permitiu ao grupo aperfeiçoar os seus conhecimentos relativos ao método de compressão de Huffman. 
+Provou-se um desafio que foi ultrapassado com sucesso.

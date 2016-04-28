@@ -1,1 +1,8 @@
 This is my CSM repository.
+
+It is the implementation of the Huffman code, probably very unoptimized.
+
+It will take a string or an image and code it into a file using the Huffman algorythm.
+
+Thanks for checking it out.
+If you use this information please do mention all its sources.

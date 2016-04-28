@@ -149,7 +149,7 @@ def write_image(name, image):
 	pass
 
 """
-Print the whole table from a dicc and a tuple array containing 
+Print the whole table from a dicc and a tuple array containing symbols and occurrences.
 """
 def print_table(tuple_array, dicc):
 	print 'Generated Huffman Table'
